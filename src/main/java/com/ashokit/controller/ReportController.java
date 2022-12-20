@@ -3,6 +3,7 @@ package com.ashokit.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +17,19 @@ public class ReportController {
 
 	@Autowired
 	private ReportService repSer;
-	
+
 	@PostMapping("/search")
-	public List<UserReports> fetchDataBySearch(@RequestBody SearchForm searchForm){
+	public List<UserReports> fetchDataBySearch(@RequestBody SearchForm searchForm) {
 		return repSer.dynamicSearch(searchForm);
 	}
-	
+
+	@GetMapping("/planName")
+	public List<String> getPlanNames() {
+		return repSer.getPlanNames();
+	}
+
+	@GetMapping("/planstatus")
+	public List<String> getPlanStatus() {
+		return repSer.getPlanStatus();
+	}
 }

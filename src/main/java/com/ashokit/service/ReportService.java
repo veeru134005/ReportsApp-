@@ -8,5 +8,9 @@ import com.ashokit.model.SearchForm;
 public interface ReportService {
 
 	public List<UserReports> dynamicSearch(SearchForm searchForm);
+
+	public List<String> getPlanNames();
+
+	public List<String> getPlanStatus();
 	
 }

@@ -10,16 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Data
-@Table(name="plans")
+@Table(name = "plans")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Plans {
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		private Integer planId;
-		private String planName;
-		
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer planId;
+	private String planName;
+
+}

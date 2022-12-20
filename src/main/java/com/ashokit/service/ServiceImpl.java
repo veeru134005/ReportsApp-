@@ -6,19 +6,23 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ashokit.Repository.PlanRepository;
 import com.ashokit.Repository.ReportRepository;
 import com.ashokit.entity.UserReports;
 import com.ashokit.model.SearchForm;
 
 @Service
-public class ServiceImpl implements ReportService{
+public class ServiceImpl implements ReportService {
 
 	@Autowired
 	private ReportRepository reportRepository;
-	
+
+	@Autowired
+	private PlanRepository planRepo;
+
 	@Override
 	public List<UserReports> dynamicSearch(SearchForm searchForm) {
-		
+
 		String planName = searchForm.getPlanName();
 		String planStatus = searchForm.getPlanStatus();
 
@@ -33,6 +37,17 @@ public class ServiceImpl implements ReportService{
 		}
 
 		return reportRepository.findAll();
+	}
+
+	@Override
+	public List<String> getPlanNames() {
+
+		return planRepo.getPlanNames();
+	}
+
+	@Override
+	public List<String> getPlanStatus() {
+		return reportRepository.getPlanStatus();
 	}
 
 }

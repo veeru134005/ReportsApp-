@@ -11,11 +11,14 @@ import com.ashokit.entity.UserReports;
 public interface ReportRepository extends JpaRepository<UserReports, Integer> {
 
 	@Query("from UserReports where planStatus=:planStatus")
-	public List<UserReports> findAllByPlanStatus(@Param("planStatus") String planStatus) ;
-	
+	public List<UserReports> findAllByPlanStatus(@Param("planStatus") String planStatus);
+
 	@Query("select r from UserReports r join r.plan p where p.planName=:planName")
 	public List<UserReports> findAllByPlanName(@Param("planName") String planName);
-	
+
 	@Query("select r from UserReports r join r.plan p where p.planName=:planName and r.planStatus=:planStatus")
-	public List<UserReports> findAllByPlanNameAndStaus(@Param("planName") String planName,@Param("planStatus") String planStatus);
+	public List<UserReports> findAllByPlanNameAndStaus(@Param("planName") String planName, @Param("planStatus") String planStatus);
+
+	@Query("select planStatus from UserReports")
+	public List<String> getPlanStatus();
 }
