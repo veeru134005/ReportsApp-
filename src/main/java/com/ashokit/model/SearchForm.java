@@ -11,6 +11,7 @@ public class SearchForm {
 	
 	private String planName;
 	private String planStatus;
+	private Integer planId;
 	//private Date startDate;
 	//private Date endDate;
 

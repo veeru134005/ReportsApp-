@@ -9,6 +9,4 @@ import com.ashokit.entity.Plans;
 
 public interface PlanRepository extends JpaRepository<Plans, Integer> {
 
-	@Query("select planName from Plans")
-	public List<String> getPlanNames();
 }

@@ -20,5 +20,7 @@ public class Plans {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer planId;
 	private String planName;
+	
+	
 
 }
