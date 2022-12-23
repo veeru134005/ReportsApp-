@@ -17,5 +17,7 @@ public interface ReportService {
 	public List<String> getPlanStatus();
 	
 	void generatExcelReport(HttpServletResponse response, SearchForm searchForm) throws Exception;
+
+	public void generatPDFReport(HttpServletResponse response, SearchForm searchForm) throws Exception;
 	
 }

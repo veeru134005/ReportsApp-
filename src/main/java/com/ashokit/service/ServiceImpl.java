@@ -1,5 +1,6 @@
 package com.ashokit.service;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +19,19 @@ import com.ashokit.Repository.ReportRepository;
 import com.ashokit.entity.Plans;
 import com.ashokit.entity.UserReports;
 import com.ashokit.model.SearchForm;
+import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 @Service
 public class ServiceImpl implements ReportService {
 
-	private static final SearchForm SearchForm = null;
 
 	@Autowired
 	private ReportRepository reportRepository;
@@ -45,7 +54,7 @@ public class ServiceImpl implements ReportService {
 			user.setPlanStatus(planStatus);
 			//return reportRepository.findAllByPlanStatus(planStatus);
 		} else if (planName != null && (planStatus == null || planStatus.isBlank())) {
-			user.setPlan(new Plans(1,planName));
+			user.setPlan(new Plans(searchForm.getPlanId(),planName));
 			//return reportRepository.findAllByPlanName(planName);
 		} else if (planName != null && searchForm.getPlanStatus() != null && !planStatus.isBlank() &&!planName.isBlank()) {
 			user.setPlanStatus(planStatus);
@@ -104,6 +113,76 @@ public class ServiceImpl implements ReportService {
 			workbook.write(outputStream);
 			workbook.close();
 			outputStream.close();
+	}
+	
+	@Override
+	public void generatPDFReport(HttpServletResponse response, SearchForm searchForm) throws Exception {
+
+		 Document document = new Document(PageSize.A4);
+	        PdfWriter.getInstance(document, response.getOutputStream());
+	         
+	        document.open();
+	        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+	        font.setSize(18);
+	        font.setColor(Color.BLUE);
+	         
+	        Paragraph p = new Paragraph("User Reports", font);
+	        p.setAlignment(Paragraph.ALIGN_CENTER);
+	         
+	        document.add(p);
+	         
+	        PdfPTable table = new PdfPTable(6);
+	        table.setWidthPercentage(100f);
+	        table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 1.5f,1.5f});
+	        table.setSpacingBefore(10);
+	        
+	        writeTableHeader(table);
+	        writeTableData(table,searchForm);
+	        
+	        document.add(table);
+	        document.close();
+	}
+
+	private void writeTableData(PdfPTable table,SearchForm searchForm) {
+		List<UserReports> userData = dynamicSearch(searchForm);
+		for (UserReports report : userData) {
+            table.addCell(String.valueOf(report.getUserId()));
+            table.addCell(report.getEmail());
+            table.addCell(String.valueOf(report.getMobileNum()));
+            table.addCell(report.getGender());
+            table.addCell(String.valueOf(report.getSsn()));
+            table.addCell(String.valueOf(report.getPlanStatus()));
+        }
+		
+	}
+
+	private void writeTableHeader(PdfPTable table) {
+
+		 PdfPCell cell = new PdfPCell();
+	        cell.setBackgroundColor(Color.BLUE);
+	        cell.setPadding(5);
+	         
+	        Font font = FontFactory.getFont(FontFactory.HELVETICA);
+	        font.setColor(Color.WHITE);
+	         
+	        cell.setPhrase(new Phrase("User Id", font));
+	         
+	        table.addCell(cell);
+	         
+	        cell.setPhrase(new Phrase("Email", font));
+	        table.addCell(cell);
+	         
+	        cell.setPhrase(new Phrase("MobileNum", font));
+	        table.addCell(cell);
+	         
+	        cell.setPhrase(new Phrase("Gender", font));
+	        table.addCell(cell);
+	         
+	        cell.setPhrase(new Phrase("SSN", font));
+	        table.addCell(cell); 
+	        
+	        cell.setPhrase(new Phrase("PlanStatus", font));
+	        table.addCell(cell); 
 	}
 	
 }

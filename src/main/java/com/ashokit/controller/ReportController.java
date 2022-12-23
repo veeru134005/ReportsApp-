@@ -51,4 +51,18 @@ public class ReportController {
 		
 		response.flushBuffer();
 	}
+	
+	//@GetMapping("/pdf")
+	@PostMapping("/pdf")
+	public void generatPdfReport(@RequestBody SearchForm searchForm, HttpServletResponse response) throws Exception {
+		response.setContentType("application/octet-stream");
+		
+		String hdrKey="Content-Disposition";
+		String hdrValue="attachment;filename=PDFreport.pdf";
+		response.setHeader(hdrKey,hdrValue);
+		
+		repSer.generatPDFReport(response, searchForm);
+		
+		response.flushBuffer();
+	}
 }
